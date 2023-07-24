@@ -1,7 +1,5 @@
 {% load static %}
 {% load women_tags %}
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,6 +71,15 @@
                         <div class="content-text">
                             {% block content %}
                             {% endblock %}
+                            <nav class="list-pages">
+                                <ul>
+                                    {% for p in paginator.page_range %}
+                                    <li class="page-num">
+                                        <a href="?page={{ p }}">{{ p }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </nav>
                         </div>
                         <!-- Конец блока контента -->
 

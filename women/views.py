@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -10,6 +11,8 @@ from .utils import *
 
 
 class WomenHome(DataMixin, ListView):
+    # amount posts on the page
+    paginate_by = 3
     model = Women
     template_name = 'women/index.html'
     context_object_name = 'posts'
@@ -24,7 +27,12 @@ class WomenHome(DataMixin, ListView):
 
 
 def about(request):  # HttpRequest
-    return render(request, "women/about.html", {"menu": menu, 'title': "About"})
+    contact_list = Women.objects.all()
+    paginator = Paginator(contact_list, 3)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, "women/about.html", {'page_obj': page_obj, "menu": menu, 'title': "About"})
 
 
 class AddPage(LoginRequiredMixin, DataMixin, CreateView):
@@ -77,15 +85,3 @@ class WomenCategory(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Category - ' + str(context['posts'][0].cat), cat_selected=context['posts'][0].cat_id)
         return dict(list(context.items()) + list(c_def.items()))
-
-# def show_category(request, cat_slug):
-#     posts = Women.objects.filter(cat__slug=cat_slug)
-#     if not posts:
-#         raise Http404()
-#     context = {
-#         "posts": posts,
-#         "menu": menu,
-#         'title': "By categories",
-#         "cats_selected": cat_slug,
-#     }
-#     return render(request, "women/index.html", context=context)
