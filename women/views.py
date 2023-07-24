@@ -11,8 +11,6 @@ from .utils import *
 
 
 class WomenHome(DataMixin, ListView):
-    # amount posts on the page
-    paginate_by = 3
     model = Women
     template_name = 'women/index.html'
     context_object_name = 'posts'
