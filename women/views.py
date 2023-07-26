@@ -1,9 +1,10 @@
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import AddPostForm
 from .models import *
@@ -81,5 +82,22 @@ class WomenCategory(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Category - ' + str(context['posts'][0].cat), cat_selected=context['posts'][0].cat_id)
+        c_def = self.get_user_context(title='Category - ' + str(context['posts'][0].cat),
+                                      cat_selected=context['posts'][0].cat_id)
         return dict(list(context.items()) + list(c_def.items()))
+
+
+class UseCreationForm:
+    pass
+
+
+class RegisterUser(DataMixin, CreateView):
+    form_class = UserCreationForm  # creating a standart form
+    template_name = 'women/register.html'  # link to what we're  use for this page
+    success_url = reverse_lazy('login') # relink to log in form if success
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Sign Up")
+        return dict(list(context.items()) + list(c_def.items()))
+
