@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
-from .forms import AddPostForm
+from .forms import AddPostForm, RegisterUserForm
 from .models import *
 from .utils import *
 
@@ -92,7 +92,7 @@ class UseCreationForm:
 
 
 class RegisterUser(DataMixin, CreateView):
-    form_class = UserCreationForm  # creating a standart form
+    form_class = RegisterUserForm  # creating a standart form
     template_name = 'women/register.html'  # link to what we're  use for this page
     success_url = reverse_lazy('login') # relink to log in form if success
 
