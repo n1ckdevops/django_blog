@@ -1,4 +1,4 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
@@ -104,7 +104,9 @@ class RegisterUser(DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def form_valid(self, form): #при успешной регистрации
-
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
 
 
 class LoginUser(DataMixin, LoginView):
