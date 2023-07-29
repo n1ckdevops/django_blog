@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -32,3 +32,8 @@ class RegisterUserForm(UserCreationForm):
         # поля
         fields = ('username', 'email', 'password1', 'password2')
         # в браузере посмотреть название полей на изи
+
+
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(label="Login", widget=forms.TextInput(attrs={'class': 'form-input'}))
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
