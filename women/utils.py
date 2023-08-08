@@ -9,7 +9,7 @@ menu = [{"title": "About", "url_name": "about"},
 
 
 class DataMixin:
-    paginate_by = 3
+    paginate_by = 20
 
     def __init__(self):
         self.request = None
